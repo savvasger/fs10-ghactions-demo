@@ -1,0 +1,42 @@
+name: GitUb Actions Demo
+on:
+  push:
+    branches:
+      - master
+
+
+  permissions:
+    contents: read
+    pages: write
+    id-token: write
+
+  jobs:
+    test-and-deploy:
+      runs-on: ubuntu-latest
+      steps:
+        
+        - name: checkout repository
+          uses: actions/checkout@v3
+        - name: setup Node.js
+          uses: actions/setup-node@v4
+          with:
+            node-version: 20
+        - name: install dependencies
+          run: npm install
+        - name: run tests
+          run: npm run test
+        - name: build frontend
+          run: npm run build
+        - name: configure GH pages
+          uses: actions/configure-pages@v5
+        - name: upload artifact
+          uses: actions/upload-pages-artifact@v1
+          with:
+            path: ./dist
+        - name: deploy to GH pages
+          uses: actions/deploy-pages@v1
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            publish_dir: ./dist
+  pull_request:
+    branches: [master]
