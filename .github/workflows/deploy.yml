@@ -35,8 +35,4 @@ on:
             path: ./dist
         - name: deploy to GH pages
           uses: actions/deploy-pages@v1
-          with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            publish_dir: ./dist
-  pull_request:
-    branches: [master]
+         
